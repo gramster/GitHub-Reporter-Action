@@ -2,6 +2,7 @@ name: 'Generate Daily Report (manual)'
 
 on:
   workflow_dispatch 
+  
 jobs:
   report:
     runs-on: ubuntu-18.04
