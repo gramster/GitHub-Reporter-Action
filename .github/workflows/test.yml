@@ -1,0 +1,11 @@
+name: 'Generate Daily Report'
+
+on:
+  workflow_dispatch 
+jobs:
+  report:
+    runs-on: ubuntu-18.04
+    timeout-minutes: 10
+    steps:
+      - id: report
+        uses: gramster/github-reporter@v1
