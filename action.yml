@@ -1,16 +1,16 @@
-name: 'github-reporter'
-description: 'Generates reports (typically daily) of potentially stale issues or issues that need attention.'
+name: "github-reporter"
+description: "Generates reports (typically daily) of potentially stale issues or issues that need attention."
 inputs:
   reportPath:
-    description: 'Path of report folder'
+    description: "Path of report folder"
     required: false
-    default: 'reports'
+    default: "reports"
   reportNameTemplate:
-    description: 'File name template for reports. Can use metacharacters understood by Python\'s strftime.'
+    description: "File name template for reports. Can use metacharacters understood by Python's strftime."
     required: false
-    default: 'report-%a.md'
+    default: "report-%a.md"
   days:
-    description: 'How often (in days) reports will be generated. Used to determine what items are new since last report.'
+    description: "How often (in days) reports will be generated. Used to determine what items are new since last report."
     required: false
     default: 1
 runs:
@@ -52,7 +52,7 @@ runs:
         fi
       shell: bash
     - name: Push changes
-      if: steps.commit.outputs.push == 'true'
+      if: steps.commit.outputs.push == "true"
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
