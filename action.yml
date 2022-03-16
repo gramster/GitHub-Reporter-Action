@@ -6,7 +6,7 @@ inputs:
     required: false
     default: "reports"
   reportNameTemplate:
-    description: "File name template for reports. Can use metacharacters understood by Python's strftime."
+    description: "File name template for reports. Can use metacharacters understood by Python strftime."
     required: false
     default: "report-%a.md"
   days:
