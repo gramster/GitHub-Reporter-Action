@@ -35,8 +35,8 @@ runs:
       shell: bash
     - name: Generate report
       run: |
-        mkdir -p $env.INPUT_REPORTPATH
-        ghreport -o $env.INPUT_REPORTPATH/$env.INPUT_REPORTNAMETEMPLATE -d $env.INPUT_DAYS $env.GITHUB_REPOSITORY ${{ secrets.GITHUB_TOKEN }}
+        mkdir -p $INPUT_REPORTPATH
+        ghreport -o $INPUT_REPORTPATH/$INPUT_REPORTNAMETEMPLATE -d $INPUT_DAYS $GITHUB_REPOSITORY ${{ secrets.GITHUB_TOKEN }}
       shell: bash
     - name: Commit report
       id: commit
