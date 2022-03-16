@@ -1,0 +1,13 @@
+name: 'Generate Daily Report'
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  
+jobs:
+  report:
+    runs-on: ubuntu-18.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - id: report
+        uses: actions/github-reporter-action@v1
