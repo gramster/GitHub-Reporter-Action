@@ -2,7 +2,7 @@ name: 'Generate Daily Report'
 
 on:
   schedule:
-    - cron: '0 5 * * *'  
+    - cron: '0 6 * * *'  
 jobs:
   report:
     runs-on: ubuntu-18.04
