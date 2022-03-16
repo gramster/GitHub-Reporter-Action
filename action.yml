@@ -1,4 +1,4 @@
-name: "github-reporter"
+name: "github-issue-reporter"
 description: "Generates reports (typically daily) of potentially stale issues or issues that need attention."
 inputs:
   reportPath:
