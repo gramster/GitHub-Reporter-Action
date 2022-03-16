@@ -10,4 +10,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - id: report
-        uses: actions/github-reporter-action@v1
+        uses: actions/github-reporter@v1
