@@ -1,15 +1,15 @@
 name: "github-issue-reporter"
 description: "Generates reports (typically daily) of potentially stale issues or issues that need attention."
 inputs:
-  - reportPath:
+  reportPath:
     description: "Path of report folder"
     required: false
     default: "reports"
-  - reportNameTemplate:
+  reportNameTemplate:
     description: "File name template for reports. Can use metacharacters understood by Python strftime."
     required: false
     default: "report-%a.md"
-  - days:
+  days:
     description: "How often (in days) reports will be generated. Used to determine what items are new since last report."
     required: false
     default: '1'
