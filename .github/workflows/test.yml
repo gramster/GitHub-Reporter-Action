@@ -1,4 +1,4 @@
-name: 'Generate Daily Report'
+name: 'Generate Daily Report (manual)'
 
 on:
   workflow_dispatch 
