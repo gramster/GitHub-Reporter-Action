@@ -8,4 +8,4 @@ jobs:
     timeout-minutes: 10
     steps:
       - id: report
-        uses: gramster/github-reporter@v1
+        uses: github-issue-reporter@v1
