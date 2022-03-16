@@ -12,7 +12,7 @@ inputs:
   days:
     description: "How often (in days) reports will be generated. Used to determine what items are new since last report."
     required: false
-    default: 1
+    default: '1'
 runs:
   using: "composite"
   steps:
