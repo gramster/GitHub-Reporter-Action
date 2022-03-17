@@ -2,6 +2,10 @@
 name: "github-issue-reporter"
 description: "Generates reports (typically daily) of potentially stale issues or issues that need attention."
 inputs:
+  repository:
+    description: "The GitHub repository to generate the report for."
+    required: false
+    default: $GITHUB_REPOSITORY
   githubToken:
     description: "The Github token or PAT token (preferred) for API access."
     required: true
@@ -60,12 +64,12 @@ runs:
     - name: Generate full report
       if: inputs.all == 'true'
       run:
-        ghreport -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} $GITHUB_REPOSITORY ${{ inputs.githubToken }}
+        ghreport -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
       shell: bash
     - name: Generate limited report
       if: inputs.all != 'true'
       run:
-        ghreport -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} $GITHUB_REPOSITORY ${{ inputs.githubToken }}
+        ghreport -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
       shell: bash
     - name: Commit report
       id: commit
