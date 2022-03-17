@@ -18,9 +18,13 @@ inputs:
     required: false
     default: ''
   days:
-    description: "How often (in days) reports will be generated. Used to determine what items are new since last report."
+    description: "Time window (in days) for reports. Used to determine what items are new since last report."
     required: false
     default: '1'
+  all:
+    description: "Whether to show all items or only those that are new (based on time window)."
+    required: false
+    default: false
   branch:
     description: "The branch to use for pushing the reports to."
     required: false
@@ -49,9 +53,18 @@ runs:
       run:
         python -m pip install ghreport
       shell: bash
-    - name: Generate report
-      run: |
+    - name: Ensure directory exists
+      run:
         mkdir -p ${{ inputs.reportPath }}
+      shell: bash
+    - name: Generate full report
+      if: ${{ inputs.all }}
+      run:
+        ghreport -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} $GITHUB_REPOSITORY ${{ inputs.githubToken }}
+      shell: bash
+    - name: Generate limited report
+      if: ${{ inputs.all }} == false
+      run:
         ghreport -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} $GITHUB_REPOSITORY ${{ inputs.githubToken }}
       shell: bash
     - name: Commit report
