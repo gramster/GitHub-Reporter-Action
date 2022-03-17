@@ -11,5 +11,5 @@ jobs:
       - id: report
         uses: gramster/github-issue-reporter@main
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
         
