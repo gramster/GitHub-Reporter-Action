@@ -39,7 +39,7 @@ runs:
       shell: bash
     - name: Generate report
       run: |
-        mkdir -p $INPUT_REPORTPATH
+        mkdir -p ${{ inputs.reportPath }}
         ghreport -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -d ${{ inputs.days }} $GITHUB_REPOSITORY ${{ inputs.githubToken }}
       shell: bash
     - name: Commit report
