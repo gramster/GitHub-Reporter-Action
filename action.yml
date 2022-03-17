@@ -14,7 +14,7 @@ inputs:
     description: "How often (in days) reports will be generated. Used to determine what items are new since last report."
     required: false
     default: '1'
-  github_token:
+  githubToken:
     description: "The Github token for API access."
     required: true
 runs:
@@ -40,7 +40,7 @@ runs:
     - name: Generate report
       run: |
         mkdir -p $INPUT_REPORTPATH
-        ghreport -o $INPUT_REPORTPATH/$INPUT_REPORTNAMETEMPLATE -d $INPUT_DAYS $GITHUB_REPOSITORY $GITHUB_TOKEN
+        ghreport -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -d ${{ inputs.days }} $GITHUB_REPOSITORY ${{ inputs.githubToken }}
       shell: bash
     - name: Commit report
       id: commit
@@ -53,4 +53,4 @@ runs:
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
-        github_token: $GITHUB_TOKEN
+        github_token: ${{ inputs.githubToken }}
