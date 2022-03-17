@@ -58,7 +58,7 @@ runs:
         mkdir -p ${{ inputs.reportPath }}
       shell: bash
     - name: Generate full report
-      if: ${{ inputs.all }}
+      if: ${{ inputs.all }} == true
       run:
         ghreport -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} $GITHUB_REPOSITORY ${{ inputs.githubToken }}
       shell: bash
