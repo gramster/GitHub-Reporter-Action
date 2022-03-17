@@ -2,6 +2,9 @@
 name: "github-issue-reporter"
 description: "Generates reports (typically daily) of potentially stale issues or issues that need attention."
 inputs:
+  githubToken:
+    description: "The Github token or PAT token (preferred) for API access."
+    required: true
   reportPath:
     description: "Path of report folder"
     required: false
@@ -18,9 +21,10 @@ inputs:
     description: "How often (in days) reports will be generated. Used to determine what items are new since last report."
     required: false
     default: '1'
-  githubToken:
-    description: "The Github token or PAT token (preferred) for API access."
-    required: true
+  branch:
+    description: "The branch to use for pushing the reports to."
+    required: false
+    default: 'main'
 runs:
   using: "composite"
   steps:
@@ -28,6 +32,7 @@ runs:
       uses: actions/checkout@v2
       with:
         persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+        ref: ${{ inputs.branch }}
         fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
     - name: Setup Python
       uses: actions/setup-python@v2
