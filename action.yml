@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-action.json
 name: "github-issue-reporter"
 description: "Generates reports (typically daily) of potentially stale issues or issues that need attention."
 inputs:
@@ -13,6 +14,9 @@ inputs:
     description: "How often (in days) reports will be generated. Used to determine what items are new since last report."
     required: false
     default: '1'
+  github_token:
+    description: "The Github token for API access."
+    required: true
 runs:
   using: "composite"
   steps:
@@ -36,7 +40,7 @@ runs:
     - name: Generate report
       run: |
         mkdir -p $INPUT_REPORTPATH
-        ghreport -o $INPUT_REPORTPATH/$INPUT_REPORTNAMETEMPLATE -d $INPUT_DAYS $GITHUB_REPOSITORY ${{ secrets.GITHUB_TOKEN }}
+        ghreport -o $INPUT_REPORTPATH/$INPUT_REPORTNAMETEMPLATE -d $INPUT_DAYS $GITHUB_REPOSITORY $GITHUB_TOKEN
       shell: bash
     - name: Commit report
       id: commit
@@ -44,15 +48,9 @@ runs:
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
         git add reports
-        if [-z "$(git status --porcelain)"]; then
-           echo "::set-output name=push::false"
-        else
-           git commit -m "Daily report update" -a
-           echo "::set-output name=push::true"
-        fi
+        git commit -m "Daily report update" -a
       shell: bash
     - name: Push changes
-      if: steps.commit.outputs.push == "true"
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: $GITHUB_TOKEN
