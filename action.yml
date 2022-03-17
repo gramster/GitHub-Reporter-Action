@@ -10,6 +10,10 @@ inputs:
     description: "File name template for reports. Can use metacharacters understood by Python strftime."
     required: false
     default: "report-%a.md"
+  team:
+    description: "Comma-separated list of team members. Start with + if this is comprehensive."
+    required: false
+    default: ''
   days:
     description: "How often (in days) reports will be generated. Used to determine what items are new since last report."
     required: false
@@ -43,7 +47,7 @@ runs:
     - name: Generate report
       run: |
         mkdir -p ${{ inputs.reportPath }}
-        ghreport -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -d ${{ inputs.days }} $GITHUB_REPOSITORY ${{ inputs.githubToken }}
+        ghreport -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} $GITHUB_REPOSITORY ${{ inputs.githubToken }}
       shell: bash
     - name: Commit report
       id: commit
