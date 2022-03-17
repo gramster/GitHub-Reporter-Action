@@ -15,13 +15,16 @@ inputs:
     required: false
     default: '1'
   githubToken:
-    description: "The Github token for API access."
+    description: "The Github token or PAT token (preferred) for API access."
     required: true
 runs:
   using: "composite"
   steps:
     - name: Check out code
       uses: actions/checkout@v2
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+        fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
     - name: Setup Python
       uses: actions/setup-python@v2
       with:
@@ -54,3 +57,4 @@ runs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ inputs.githubToken }}
+        branch: ${{ github.ref }}
