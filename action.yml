@@ -58,12 +58,12 @@ runs:
         mkdir -p ${{ inputs.reportPath }}
       shell: bash
     - name: Generate full report
-      if: ${{ inputs.all == true }}
+      if: inputs.all == true
       run:
         ghreport -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} $GITHUB_REPOSITORY ${{ inputs.githubToken }}
       shell: bash
     - name: Generate limited report
-      if: ${{ inputs.all == false }}
+      if: inputs.all == false
       run:
         ghreport -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} $GITHUB_REPOSITORY ${{ inputs.githubToken }}
       shell: bash
