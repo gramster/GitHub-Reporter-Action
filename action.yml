@@ -25,6 +25,10 @@ inputs:
     description: "Time window (in days) for reports. Used to determine what items are new since last report."
     required: false
     default: '1'
+  count:
+    description: "Batch size for Github API call; reduce if action is timing out during API calls."
+    required: false
+    default: '25'
   all:
     description: "Whether to show all items or only those that are new (based on time window)."
     required: false
@@ -64,18 +68,19 @@ runs:
     - name: Generate full report
       if: inputs.all == 'true'
       run:
-        ghreport -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
+        ghreport -a -n ${{ inputs.count }} -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
       shell: bash
     - name: Generate limited report
       if: inputs.all != 'true'
       run:
-        ghreport -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
+        ghreport -n ${{ inputs.count }} -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
       shell: bash
     - name: Commit report
       id: commit
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
+        git pull
         git add -A
         git commit -m "Daily report update" -a
       shell: bash
