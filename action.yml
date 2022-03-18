@@ -76,7 +76,7 @@ runs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
-        git add -u
+        git add -a
         git commit -m "Daily report update" -a
       shell: bash
     - name: Push changes
