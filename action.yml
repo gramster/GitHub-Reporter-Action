@@ -57,6 +57,10 @@ runs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
+    - name: Install numpy 1.x # Despite pinning numpy in ghreport next step installs numpy 2 so trying this 
+      run:
+        python -m pip install numpy==1.26.4
+      shell: bash          
     - name: Install reporter
       run:
         python -m pip install ghreport
