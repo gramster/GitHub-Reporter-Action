@@ -86,6 +86,7 @@ runs:
         git config --local user.name "github-actions"
         git pull
         git add -A
+        git status
         git commit -m "Daily report update" -a
       shell: bash
     - name: Push changes
