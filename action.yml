@@ -72,12 +72,12 @@ runs:
     - name: Generate full report
       if: inputs.all == 'true'
       run:
-        ghreport report -T -a -n ${{ inputs.count }} -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
+        ghreport report -T -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
       shell: bash
     - name: Generate limited report
       if: inputs.all != 'true'
       run:
-        ghreport report -T -n ${{ inputs.count }} -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
+        ghreport report -T -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
       shell: bash
     - name: Commit report
       id: commit
