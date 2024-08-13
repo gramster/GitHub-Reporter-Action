@@ -33,6 +33,10 @@ inputs:
     description: "Whether to show all items or only those that are new (based on time window)."
     required: false
     default: false
+  hotspots:
+    description: "Whether to show a report on frequently changed files."
+    required: false
+    default: false    
   branch:
     description: "The branch to use for pushing the reports to."
     required: false
@@ -69,13 +73,18 @@ runs:
       run:
         mkdir -p ${{ inputs.reportPath }}
       shell: bash
+    - name: Generate full report with hotspots
+      if: ${{ inputs.all == 'true' && inputs.hotspots == 'true' }} 
+      run:
+        ghreport report -h -T -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
+      shell: bash    
     - name: Generate full report
-      if: inputs.all == 'true'
+      if: ${{ inputs.all == 'true' && inputs.hotspots != 'true' }}
       run:
         ghreport report -T -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
       shell: bash
     - name: Generate limited report
-      if: inputs.all != 'true'
+      if: ${{ inputs.all != 'true' }}
       run:
         ghreport report -T -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
       shell: bash
