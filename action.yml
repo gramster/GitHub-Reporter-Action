@@ -3,9 +3,13 @@ name: "github-issue-reporter"
 description: "Generates reports (typically daily) of potentially stale issues or issues that need attention."
 inputs:
   repository:
-    description: "The GitHub repository to generate the report for."
+    description: "The GitHub issue repository to generate the report for."
     required: false
     default: $GITHUB_REPOSITORY
+  prs:
+    description: "The GitHub code repository to generate the report for, if different to issue repository."
+    required: false
+    default: ''    
   githubToken:
     description: "The Github token or PAT token (preferred) for API access."
     required: true
@@ -25,10 +29,6 @@ inputs:
     description: "Time window (in days) for reports. Used to determine what items are new since last report."
     required: false
     default: '1'
-  count:
-    description: "Batch size for Github API call; reduce if action is timing out during API calls."
-    required: false
-    default: '25'
   all:
     description: "Whether to show all items or only those that are new (based on time window)."
     required: false
@@ -72,12 +72,12 @@ runs:
     - name: Generate full report
       if: inputs.all == 'true'
       run:
-        ghreport report -T -a -n ${{ inputs.count }} -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
+        ghreport report -T -a -n ${{ inputs.count }} -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
       shell: bash
     - name: Generate limited report
       if: inputs.all != 'true'
       run:
-        ghreport report -T -n ${{ inputs.count }} -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
+        ghreport report -T -n ${{ inputs.count }} -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
       shell: bash
     - name: Commit report
       id: commit
