@@ -10,9 +10,12 @@ inputs:
     description: "The GitHub code repository to generate the report for, if different to issue repository."
     required: false
     default: ''    
-  githubToken:
-    description: "The Github token or PAT token (preferred) for API access."
+  githubTokenRead:
+    description: "The Github token or PAT token (preferred) for API access for reading issues."
     required: true
+  githubTokenCommit:
+    description: "The Github token or PAT token (preferred) for API access for committing reports."
+    required: true    
   reportPath:
     description: "Path of report folder"
     required: false
@@ -76,17 +79,17 @@ runs:
     - name: Generate full report with hotspots
       if: ${{ inputs.all == 'true' && inputs.hotspots == 'true' }} 
       run:
-        ghreport report -h -T -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
+        ghreport report -h -T -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubTokenRead }}
       shell: bash    
     - name: Generate full report
       if: ${{ inputs.all == 'true' && inputs.hotspots != 'true' }}
       run:
-        ghreport report -T -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
+        ghreport report -T -a -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubTokenRead }}
       shell: bash
     - name: Generate limited report
       if: ${{ inputs.all != 'true' }}
       run:
-        ghreport report -T -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubToken }}
+        ghreport report -T -o ${{ inputs.reportPath }}/${{ inputs.reportNameTemplate }} -p ${{ inputs.prs }} -t ${{ inputs.team }} -d ${{ inputs.days }} ${{ inputs.repository }} ${{ inputs.githubTokenRead }}
       shell: bash
     - name: Commit report
       id: commit
@@ -101,5 +104,5 @@ runs:
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ inputs.githubToken }}
+        github_token: ${{ inputs.githubTokenCommit }}
         branch: ${{ inputs.branch }}
